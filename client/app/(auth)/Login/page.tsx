@@ -3,12 +3,14 @@ import LoginForm from '@/app/UI/Register/LoginForm'
 import StepsLogin from '@/app/UI/Register/StepsLogin'
 import Image from '@/app/UI/Register/Image'
 import React from 'react'
+import Error from '@/app/UI/Register/Error'
 
 const Login = () => {
   return (
-    <div className='w-full max-h-[800px]  h-full  grid grid-flow-row  grid-rows-[120px_1fr_200px] '>
+    <div className='w-full max-h-[800px]  h-full  grid grid-flow-row  grid-rows-[60px_30px_1fr_200px] gap-2 '>
         <StepsLogin/>
-        <div className='w-full  flex relative'>
+        <Error />
+        <div className='w-full  flex relative '>
         <RegisterForm/>
         <LoginForm/>
         </div>

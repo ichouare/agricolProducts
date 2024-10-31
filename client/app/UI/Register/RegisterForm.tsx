@@ -6,7 +6,7 @@ import gsap from "gsap";
 
 const RegisterForm = () => {
   const RegisterRef = useRef<HTMLFormElement>(null)
-  const { step } = useGlobalContext();
+  const { step, setStep, setError } = useGlobalContext();
 
   useEffect(() => {
     if(RegisterRef.current)
@@ -24,38 +24,51 @@ const RegisterForm = () => {
 
   const [formData, setFormData] = useState({
     username: '',
-    secondName: '',
     email: '',
     password: '',
   })
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submit:', formData)
-    try{
+  
+    try {
       const response = await fetch('http://localhost:8000/auth/register/', {
-        method : 'POST',
-        headers : {
-          'Content-Type': 'application/json'
+        method: 'POST',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
         },
-        body : JSON.stringify(formData)
-      })
-      console.log(response)
-
-    }catch(e){
-        console.log(e)
+        body: JSON.stringify(formData),
+      });
+  
+      // Check if response is ok
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log('Error response:', errorData);
+        setError(errorData.username ||  errorData.email || errorData.password);
+        return; // Exit the function if there's an error
+      }
+  
+      const data = await response.json(); // Remove destructuring to avoid errors
+      if(data)
+        {
+          setError('')
+          setTimeout(() =>{ setStep(1)}, 1000)
+        }
+  
+      e.currentTarget.reset();
+      setFormData({
+        username: '',
+        email: '',
+        password: '',
+      });
+    } catch (error) {
+      console.log('Fetch error:', error);
     }
-    //reset form data
-    e.currentTarget.reset();
-    setFormData({
-      username: '',
-      secondName: '',
-      email: '',
-      password: '',
-    })
-  }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError('')
     setFormData(prevState => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -77,22 +90,7 @@ const RegisterForm = () => {
           name="username"
           className="bg-transparent border border-black  w-[100%] rounded-md p-1"
           onChange={handleChange}
-          required
-        />
-      </div>
-      <div className="flex flex-col  w-full  gap-2 ">
-        <label
-          className=" text-heading_color font-semibold text-xs capitalize outline-0 "
-          htmlFor="secondName"
-        >
-          last Name
-        </label>
-        <input
-          type="text"
-          id="secondName"
-          name="secondName"
-          className="bg-transparent border border-black   w-[100%] rounded-md p-1 lowercase"
-          onChange={handleChange}
+          value={formData.username}
           required
         />
       </div>
@@ -109,6 +107,7 @@ const RegisterForm = () => {
           name="email"
           className="bg-transparent border border-black   w-[100%] rounded-md p-1 text-heading_color"
           onChange={handleChange}
+          value={formData.email}
           required
         />
       </div>
@@ -125,6 +124,7 @@ const RegisterForm = () => {
           name="password"
           className="bg-transparent border border-black   w-[100%] rounded-md p-1 text-heading_color uppercase"
           onChange={handleChange}
+          value={formData.password}
           required
         />
       </div>
