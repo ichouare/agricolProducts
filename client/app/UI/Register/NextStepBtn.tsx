@@ -4,7 +4,7 @@ import { GrLinkNext } from "react-icons/gr";
 
 const NextStepBtn = ({value} : {value: string}) => {
   return (
-    <div className=" w-full grid grid-flow-col gap-10  place-content-center bg-black   ">
+    <div className=" w-full grid grid-flow-col gap-10  place-content-center bg-heading_color   ">
     <button className="btn" type="submit">{value}</button>
 
 </div>

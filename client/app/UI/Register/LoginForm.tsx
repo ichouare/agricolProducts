@@ -2,9 +2,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import NextStepBtn from "./NextStepBtn";
 import { useGlobalContext } from "./RegiterProvider";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
 
 const RegisterForm = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -41,8 +43,10 @@ const RegisterForm = () => {
         return; // Exit the function if there's an error
       }
 
-      const data = await response.json(); // Remove destructuring to avoid errors
-      console.log("Data:", data);
+      // Remove destructuring to avoid errors
+      setTimeout(() => {
+        router.push('/')
+      }, 1000)
       e.currentTarget.reset();
       setFormData({
         email: "",

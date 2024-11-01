@@ -12,7 +12,7 @@ const config: Config = {
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
-  			heading_color: '#AAAAAA',
+  			heading_color: '#1B7A43',
   			'btn_bg': '#040510',
   			card: {
   				DEFAULT: 'hsl(var(--card))',

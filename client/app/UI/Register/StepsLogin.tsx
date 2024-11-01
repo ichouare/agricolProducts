@@ -7,7 +7,7 @@ import { useGlobalContext } from "./RegiterProvider";
 const StepsLogin = () => {
   const { step, setStep } = useGlobalContext();
   const containerSteps = useRef<HTMLUListElement>(null);
-  const steps = ["Login", "Sign up"];
+  const steps = ["sing in", "Login"];
   useEffect(() => {
     if (containerSteps.current) {
       containerSteps.current.childNodes.forEach((node, index) => {

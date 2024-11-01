@@ -7,7 +7,7 @@ import Error from '@/app/UI/Register/Error'
 
 const Login = () => {
   return (
-    <div className='w-full max-h-[800px]  h-full  grid grid-flow-row  grid-rows-[60px_30px_1fr_200px] gap-2 '>
+    <div className='w-full 2xl:max-h-[800px]  h-full  grid grid-flow-row  grid-rows-[60px_30px_1fr_200px] gap-2 '>
         <StepsLogin/>
         <Error />
         <div className='w-full  flex relative '>
