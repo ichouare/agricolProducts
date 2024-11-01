@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from django.http import JsonResponse
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes,authentication_classes
 from .serializers import RegisterUserSerialzer , UserSerializer
 from rest_framework import status
 from .models import User
@@ -16,7 +16,8 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 @api_view(['GET', 'POST'])
-@permission_classes([AllowAny])
+@permission_classes([AllowAny])   
+@authentication_classes([])
 def sign_up(request):
     if request.method == 'GET':
            return Response({"message": "Welcome to home"})
@@ -30,7 +31,8 @@ def sign_up(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@permission_classes([AllowAny])
+@permission_classes([AllowAny]) 
+@authentication_classes([])
 def login(request):
     if request.method == 'POST':
         try:
@@ -46,8 +48,8 @@ def login(request):
             if user is not None:
                 auth_login(request, user)
                 refresh  = RefreshToken.for_user(user)
-                refresh_token = str(refresh),
-                access_token = str(refresh.access_token),
+                refresh_token = str(refresh)
+                access_token = str(refresh.access_token)
                 response = Response({
                     'refresh':  refresh_token,
                     'access': access_token,
@@ -57,19 +59,21 @@ def login(request):
 
                 # Set the cookies
                 response.set_cookie(
-                    key=settings.SIMPLE_JWT["AUTH_COOKIE"],
-                    value=access_token,
-                    httponly=True,
-                    secure=False,
-                    samesite="None",
+                key=settings.SIMPLE_JWT["AUTH_COOKIE"],
+                value=access_token,
+                httponly=True,
+                secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                samesite='Lax',
                 )
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"],
                     value=refresh_token,
                     httponly=True,
-                    secure=False,
-                    samesite="None",
+                    secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                    samesite='Lax',
+
                 )
+
               
                 return response
             else:
@@ -79,7 +83,7 @@ def login(request):
 
 
 
-@csrf_exempt
+# @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def check_Session(request):

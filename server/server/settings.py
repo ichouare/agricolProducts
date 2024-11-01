@@ -53,7 +53,7 @@ REST_FRAMEWORK = {
       'DEFAULT_AUTHENTICATION_CLASSES': (
         'server.authenticate.CustomJWTAuthentication',
     ),
-      'DEFAULT_PERMISSION_CLASSES': (
+    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
@@ -72,6 +72,7 @@ SIMPLE_JWT = {
     'AUTH_COOKIE': 'access',  # Set the cookie name for access token
     "AUTH_COOKIE_REFRESH": "refresh",
     'AUTH_COOKIE_HTTP_ONLY': True, 
+    'AUTH_COOKIE_SAMESITE': 'Lax', 
      # Store the token in Htt
 
 }
@@ -169,6 +170,11 @@ AUTH_USER_MODEL = 'user.User'
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',  # Add your frontend URL
 ]
 
 
